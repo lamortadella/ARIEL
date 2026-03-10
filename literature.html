@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariel MCS — Literature</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #040912;
+    --surface: #080f1e;
+    --surface2: #0d1929;
+    --border: #1a2d4a;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --gold: #f59e0b;
+    --text: #e2eaf5;
+    --muted: #6b8caf;
+    --dim: #3a5272;
+    --green: #10b981;
+    --purple: #8b5cf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield */
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .starfield::before, .starfield::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 8%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 65%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 80% 50%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 60% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 22% 60%, rgba(160,180,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 67% 88%, rgba(255,200,150,0.4) 0%, transparent 100%);
+  }
+  .starfield::after {
+    background-image:
+      radial-gradient(1px 1px at 8% 32%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 18% 88%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 33% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 47% 72%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 58% 18%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 40%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 92%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 28% 22%, rgba(200,210,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 62% 82%, rgba(255,220,180,0.4) 0%, transparent 100%);
+    animation: twinkle 8s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    0%   { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.7; }
+  }
+
+  .nebula {
+    position: fixed; width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(59,130,246,0.06) 0%, transparent 70%);
+    top: -200px; right: -200px; pointer-events: none; z-index: 0;
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+  .nebula2 {
+    position: fixed; width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(139,92,246,0.05) 0%, transparent 70%);
+    bottom: -100px; left: -100px; pointer-events: none; z-index: 0;
+    animation: drift 25s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(30px, 20px) scale(1.05); }
+  }
+
+  .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Top nav */
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0 0;
+  }
+  .topnav-logo {
+    font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+    color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .topnav-logo span { color: var(--accent2); }
+  .topnav-links { display: flex; align-items: center; gap: 4px; }
+  .topnav-links a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 8px;
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    color: var(--muted); text-decoration: none;
+    border: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .topnav-links a:hover { color: var(--text); border-color: var(--border); background: rgba(255,255,255,0.03); }
+  .topnav-links a.active {
+    color: var(--accent2); border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.07);
+  }
+
+  /* Header */
+  header {
+    padding: 50px 0 36px; border-bottom: 1px solid var(--border);
+    margin-bottom: 48px; animation: fadeDown 0.8s ease both;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .mission-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px; padding: 5px 14px 5px 8px;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.08em; color: var(--accent2);
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .mission-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.7); }
+    50%      { box-shadow: 0 0 0 5px rgba(59,130,246,0); }
+  }
+  h1 {
+    font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 14px;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa 50%, #f0abfc);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .subtitle {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    color: var(--muted); line-height: 1.8; max-width: 600px;
+  }
+
+  /* Section label */
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .filter-btn {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    padding: 6px 14px; border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(59,130,246,0.06); }
+  .filter-btn.on {
+    border-color: var(--accent); color: var(--accent2);
+    background: rgba(59,130,246,0.1);
+  }
+
+  /* Paper cards */
+  .papers { display: flex; flex-direction: column; gap: 14px; margin-bottom: 48px; }
+
+  .paper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    animation: fadeUp 0.5s ease both;
+    position: relative; overflow: hidden;
+  }
+  .paper::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .paper:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.03); transform: translateX(2px); }
+  .paper:hover::before { opacity: 1; }
+
+  .paper-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tag {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    padding: 2px 9px; border-radius: 100px;
+    border: 1px solid; letter-spacing: 0.05em;
+  }
+  .tag-mission  { color: var(--accent2);   border-color: rgba(96,165,250,0.35);  background: rgba(96,165,250,0.08); }
+  .tag-targets  { color: var(--green);     border-color: rgba(16,185,129,0.35);  background: rgba(16,185,129,0.08); }
+  .tag-stellar  { color: var(--gold);      border-color: rgba(245,158,11,0.35);  background: rgba(245,158,11,0.08); }
+  .tag-atmo     { color: #f472b6;          border-color: rgba(244,114,182,0.35); background: rgba(244,114,182,0.08); }
+  .tag-gaia     { color: #c4b5fd;          border-color: rgba(139,92,246,0.35);  background: rgba(139,92,246,0.08); }
+  .tag-catalogue  { color: #fb923c; border-color: rgba(251,146,60,0.35);  background: rgba(251,146,60,0.08); }
+  .tag-calibrators{ color: #34d399; border-color: rgba(52,211,153,0.35);  background: rgba(52,211,153,0.08); }
+
+  .paper-title {
+    font-size: 15px; font-weight: 700; line-height: 1.4;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .paper-authors {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--muted); margin-bottom: 6px; line-height: 1.6;
+  }
+  .paper-authors strong { color: var(--accent2); }
+  .paper-meta {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .paper-journal {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--dim); font-style: italic;
+  }
+  .btn-ads {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    padding: 3px 10px; border-radius: 6px; text-decoration: none;
+    border: 1px solid rgba(59,130,246,0.35);
+    background: rgba(59,130,246,0.08); color: var(--accent2);
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-ads:hover { background: rgba(59,130,246,0.18); border-color: var(--accent2); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border); padding-top: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    font-family: 'Space Mono', monospace; font-size: 11px; color: var(--dim);
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent2); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .d1{animation-delay:0.05s} .d2{animation-delay:0.1s} .d3{animation-delay:0.15s}
+  .d4{animation-delay:0.2s}  .d5{animation-delay:0.25s} .d6{animation-delay:0.3s}
+  .d7{animation-delay:0.35s} .d8{animation-delay:0.4s}  .d9{animation-delay:0.45s}
+
+  @media(max-width:600px) {
+    .paper-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="starfield"></div>
+<div class="nebula"></div>
+<div class="nebula2"></div>
+
+<div class="page">
+
+  <!-- Nav -->
+  <nav class="topnav">
+    <div class="topnav-logo">☽ <span>Ariel</span> MCS</div>
+    <div class="topnav-links">
+      <a href="index.html">🏠 Catalogue</a>
+      <a href="literature.html" class="active">📚 Literature</a>
+      <a href="software.html">⚙️ Software</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header>
+    <div class="mission-badge"><span class="dot"></span>Key References · Ariel Science</div>
+    <h1>📚 <em>Literature</em></h1>
+    <p class="subtitle">
+      Key papers underpinning the Ariel Mission Candidate Sample —
+      covering mission design, target selection, stellar characterisation,
+      atmospheric science, and catalogue methodology.
+    </p>
+  </header>
+
+  <!-- Filter -->
+  <div class="section-label">🏷 Filter by topic</div>
+  <div class="filter-bar">
+    <button class="filter-btn on" data-tag="all">All</button>
+    <button class="filter-btn" data-tag="tag-mission">Mission</button>
+    <button class="filter-btn" data-tag="tag-targets">Target Selection</button>
+    <button class="filter-btn" data-tag="tag-stellar">Stellar</button>
+    <button class="filter-btn" data-tag="tag-atmo">Atmospheres</button>
+    <button class="filter-btn" data-tag="tag-gaia">Gaia</button>
+    <button class="filter-btn" data-tag="tag-catalogue">Catalogue</button>
+    <button class="filter-btn" data-tag="tag-calibrators">Calibrators</button>
+  </div>
+
+  <!-- Papers -->
+  <div class="section-label">📄 Papers</div>
+  <div class="papers" id="papers">
+
+    <!-- 1 -->
+    <div class="paper d1" data-tags="tag-mission tag-targets">
+      <div class="paper-tags">
+        <span class="tag tag-mission">Mission</span>
+        <span class="tag tag-targets">Target Selection</span>
+      </div>
+      <div class="paper-title">Ariel: Enabling planetary science across light-years</div>
+      <div class="paper-authors"><strong>Tinetti, G.</strong> et al. (Ariel Consortium)</div>
+      <div class="paper-meta">
+        <span class="paper-journal">Experimental Astronomy, 53, 279–401 (2021)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2021ExA....53..279T" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="paper d2" data-tags="tag-targets tag-catalogue">
+      <div class="paper-tags">
+        <span class="tag tag-targets">Target Selection</span>
+        <span class="tag tag-catalogue">Catalogue</span>
+      </div>
+      <div class="paper-title">The Ariel Mission Candidate Sample</div>
+      <div class="paper-authors"><strong>Edwards, B.</strong> &amp; Tinetti, G.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">The Astronomical Journal, 162, 100 (2021)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2021AJ....162..100E" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="paper d3" data-tags="tag-targets tag-catalogue">
+      <div class="paper-tags">
+        <span class="tag tag-targets">Target Selection</span>
+        <span class="tag tag-catalogue">Catalogue</span>
+      </div>
+      <div class="paper-title">An updated and refined analysis of the Ariel Mission Candidate Sample</div>
+      <div class="paper-authors"><strong>Edwards, B.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">Experimental Astronomy, 53, 903–926 (2022)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2022ExA....53..903E" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="paper d4" data-tags="tag-stellar tag-catalogue">
+      <div class="paper-tags">
+        <span class="tag tag-stellar">Stellar</span>
+        <span class="tag tag-catalogue">Catalogue</span>
+      </div>
+      <div class="paper-title">The Ariel Stellar Catalogue</div>
+      <div class="paper-authors"><strong>Mugnai, L. V.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">The Astronomical Journal, 164, 79 (2022)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2022AJ....164...79M" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="paper d5" data-tags="tag-gaia tag-stellar">
+      <div class="paper-tags">
+        <span class="tag tag-gaia">Gaia</span>
+        <span class="tag tag-stellar">Stellar</span>
+      </div>
+      <div class="paper-title">Gaia Data Release 3: Summary of the content and survey properties</div>
+      <div class="paper-authors"><strong>Gaia Collaboration</strong>, Vallenari, A. et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">Astronomy &amp; Astrophysics, 674, A1 (2023)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2023A%26A...674A...1G" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="paper d6" data-tags="tag-atmo tag-mission">
+      <div class="paper-tags">
+        <span class="tag tag-atmo">Atmospheres</span>
+        <span class="tag tag-mission">Mission</span>
+      </div>
+      <div class="paper-title">Ariel's in-flight performance and target observability</div>
+      <div class="paper-authors"><strong>Zellem, R. T.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">Publications of the Astronomical Society of the Pacific, 132, 054401 (2020)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2020PASP..132e4401Z" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="paper d7" data-tags="tag-atmo">
+      <div class="paper-tags">
+        <span class="tag tag-atmo">Atmospheres</span>
+      </div>
+      <div class="paper-title">Chemical diversity in exoplanet atmospheres: The Ariel science case</div>
+      <div class="paper-authors"><strong>Changeat, Q.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">The Astrophysical Journal Supplement Series, 260, 3 (2022)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2022ApJS..260....3C" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="paper d8" data-tags="tag-targets tag-gaia">
+      <div class="paper-tags">
+        <span class="tag tag-targets">Target Selection</span>
+        <span class="tag tag-gaia">Gaia</span>
+      </div>
+      <div class="paper-title">TESS Input Catalog version 8.2</div>
+      <div class="paper-authors"><strong>Paegert, M.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">arXiv:2108.04778 (2021)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2021arXiv210804778P" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="paper d9" data-tags="tag-mission tag-atmo">
+      <div class="paper-tags">
+        <span class="tag tag-mission">Mission</span>
+        <span class="tag tag-atmo">Atmospheres</span>
+      </div>
+      <div class="paper-title">ExoAriel: A simulator for the Ariel space telescope</div>
+      <div class="paper-authors"><strong>Mugnai, L. V.</strong> et al.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">The Astronomical Journal, 162, 264 (2021)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2021AJ....162..264M" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="paper" data-tags="tag-calibrators tag-stellar">
+      <div class="paper-tags">
+        <span class="tag tag-calibrators">Calibrators</span>
+        <span class="tag tag-stellar">Stellar</span>
+      </div>
+      <div class="paper-title">Refining the CALSPEC Catalog of Standards with TESS</div>
+      <div class="paper-authors"><strong>Dutkiewicz, T.</strong>, Mullally, S., Sloan, G., Calamida, A., Bohlin, R. &amp; Gordon, K.</div>
+      <div class="paper-meta">
+        <span class="paper-journal">American Astronomical Society Meeting Abstracts #245 (2025)</span>
+        <a class="btn-ads" href="https://ui.adsabs.harvard.edu/abs/2025AAS...24523401D/abstract" target="_blank">↗ ADS</a>
+      </div>
+    </div>
+
+  </div><!-- /papers -->
+
+  <!-- Footer -->
+  <footer>
+    <span>Ariel Mission Candidate Sample · INAF &amp; ESA Ariel Consortium</span>
+    <span>
+      <a href="index.html">Catalogue</a> &nbsp;·&nbsp;
+      <a href="software.html">Software</a> &nbsp;·&nbsp;
+      <a href="https://github.com/arielmission-space/Mission_Candidate_Sample" target="_blank">GitHub</a>
+    </span>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const papers     = document.querySelectorAll('.paper');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const tag = btn.dataset.tag;
+      papers.forEach(p => {
+        if (tag === 'all' || p.dataset.tags.includes(tag)) {
+          p.style.display = '';
+        } else {
+          p.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
